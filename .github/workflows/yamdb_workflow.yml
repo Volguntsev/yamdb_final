@@ -42,6 +42,8 @@ jobs:
     needs: tests
     steps:
       - name: Check out the repo
+        run: |
+          cd api_yamdb
         # Проверка доступности репозитория Docker Hub для workflow
         uses: actions/checkout@v2 
       - name: Set up Docker Buildx
@@ -55,8 +57,6 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Push to Docker Hub
         # Пуш образа в Docker Hub 
-        run: |
-          cd api_yamdb
         uses: docker/build-push-action@v2 
         with:
           push: true
