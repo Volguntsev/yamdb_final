@@ -2,6 +2,11 @@
 # версия docker-compose
 version: '3.8'
 
+volumes:
+  # Новые тома 
+  static_value:
+  media_value:
+  database:
 # имена и описания контейнеров, которые должны быть развёрнуты
 services:
   # описание контейнера db
@@ -10,19 +15,15 @@ services:
     image: postgres:13.0-alpine
     # volume и связанная с ним директория в контейнере
     volumes:
-      - /var/lib/postgresql/data/
+      - database:/var/lib/postgresql/data/
     # адрес файла, где хранятся переменные окружения
     env_file:
       - ./.env
   web:
-    image: volguntsev/api_yamdb
+    image: volguntsev/yamdb_final:latest
     restart: always
     volumes:
-      # Контейнер web будет работать с данными, хранящиеся в томе static_value, 
-      # через свою директорию /app/static/
       - static_value:/app/static/
-      # Данные, хранящиеся в томе media_value, будут доступны в контейнере web 
-      # через директорию /app/media/
       - media_value:/app/media/
     # «зависит от», 
     depends_on:
@@ -55,8 +56,3 @@ services:
     depends_on:
       # Контейнер nginx должен быть запущен после контейнера web
       - web
-
-volumes:
-  # Новые тома 
-  static_value:
-  media_value:
