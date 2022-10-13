@@ -74,6 +74,7 @@ jobs:
             sudo docker-compose exec -T web python manage.py collectstatic --noinput
             sudo docker-compose exec -T web cp staticfiles/redoc.yaml static/
 
+
   send_message:
     runs-on: ubuntu-latest
     needs: deploy
